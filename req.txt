@@ -1,2 +1,6 @@
 Django==4.2.2
 requests==2.31.0
+djangorestframework==3.14.0
+Markdown==3.4.3
+django-filter==23.2
+drf-yasg==1.21.6

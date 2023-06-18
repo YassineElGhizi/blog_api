@@ -52,3 +52,14 @@ class Blog(TimeStamp):
 
     def __str__(self):
         return f'{self.h1}'
+
+
+class Cookie(TimeStamp):
+    token = models.TextField()
+    name = models.CharField(max_length=60, null=True, blank=True)
+    epochTime = models.TextField()
+
+    @property
+    def expiryDate(self):
+        from datetime import datetime
+        return datetime.fromtimestamp(float(self.epochTime))

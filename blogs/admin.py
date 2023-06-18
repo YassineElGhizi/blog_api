@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Lang, Category, Blog
+from .models import Lang, Category, Blog, Cookie
 
 
 @admin.register(Blog)
@@ -17,6 +17,12 @@ class BlogAdmin(admin.ModelAdmin):
 class LangAdmin(admin.ModelAdmin):
     model = Lang
     list_display = ("id", "name", "deepl_lang")
+
+
+@admin.register(Cookie)
+class LangAdmin(admin.ModelAdmin):
+    model = Cookie
+    list_display = ("id", "name", "expiryDate")
 
 
 admin.site.register(Category)
