@@ -17,7 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
+# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklis
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-@sq#rah9jglt0_i(lj4wv+ng^hm514dv*y25)m$lvhe6^grw(h'
@@ -79,9 +79,17 @@ WSGI_APPLICATION = 'django_adnanE.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': BASE_DIR / 'db.sqlite3',
+#    }
+	'default': {
+        	'ENGINE': 'mysql.connector.django', 
+       		'NAME': 'django_dashboard_adnane',
+        	'USER': 'sammy',
+        	'PASSWORD': 'password',
+        	'HOST': 'localhost',   # Or an IP Address that your DB is hosted on
+        	'PORT': '3306',
     }
 }
 
