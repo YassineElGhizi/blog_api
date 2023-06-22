@@ -10,7 +10,7 @@ def translate(src: str, dis: str, text: str):
     try:
         encoded = base64.b64encode(bytes(text, 'utf-8'))
         encodedStr = encoded.decode('utf-8')
-        contents = {"source": src, "dest": dis, "version": "Free", "text": encodedStr}
+        contents = {"source" :"French", "dest": "English", "version": "Free", "text": encodedStr}
         r = requests.post(url, json=contents)
         if r.status_code == 200:
             decoded = base64.b64decode(bytes(r.text, 'utf-8'))

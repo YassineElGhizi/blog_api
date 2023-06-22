@@ -29,10 +29,10 @@ class SocialMedia(TimeStamp):
 
 
 class Blog(TimeStamp):
-    title_seo = models.CharField(max_length=100)
-    description_seo = models.CharField(max_length=400, null=True, blank=True)
-    h1 = models.CharField(max_length=120, db_index=True)
-    h2 = models.CharField(max_length=200, null=True, blank=True)
+    title_seo = models.CharField(max_length=500)
+    description_seo = models.CharField(max_length=500, null=True, blank=True)
+    h1 = models.CharField(max_length=500, db_index=True)
+    h2 = models.CharField(max_length=500, null=True, blank=True)
     content = models.TextField()
     image = models.TextField(null=True, blank=True)
     alt = models.TextField(null=True, blank=True)
