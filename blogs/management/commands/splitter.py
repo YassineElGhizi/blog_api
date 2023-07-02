@@ -16,10 +16,16 @@ def split_paragraphs(text: str):
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        blogs = Blog.objects.filter(is_copyrighted=False, is_processed=True, is_splitted=False).all()
-        for blog in blogs:
-            print(blog.id)
-            new_text = split_paragraphs(blog.content)
-            blog.content = new_text
-            blog.is_splitted = True
-            blog.save()
+        bulk_update = []
+        try:
+            blogs = Blog.objects.filter(is_copyrighted=False, is_processed=True, is_splitted=False).all()
+            for blog in blogs:
+                print(blog.id)
+                new_text = split_paragraphs(blog.content)
+                blog.content = new_text
+                blog.is_splitted = True
+                # blog.save()
+                bulk_update.append(blog)
+            Blog.objects.bulk_update(bulk_update, fields=['content', 'is_splitted'])
+        except Exception as e:
+            Blog.objects.bulk_update(bulk_update, fields=['content', 'is_splitted'])
