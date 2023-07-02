@@ -9,7 +9,8 @@ class BlogAdmin(admin.ModelAdmin):
         "id", "h1", "categorie", "is_ready", "is_processed", "is_copyrighted", "language", "is_published", "created_at")
     list_filter = ("is_ready", "is_published", "is_processed", "is_copyrighted", "created_at", "categorie", "language",)
     readonly_fields = (
-        "is_ready", "is_processed", "is_copyrighted", "social_media", "is_reeled", "image", "href", "parent_id")
+        "is_ready", "is_processed", "is_copyrighted", "social_media", "is_reeled", "image", "href", "parent_id",
+        "is_splitted")
     list_per_page = 10
 
 
