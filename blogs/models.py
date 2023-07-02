@@ -49,6 +49,7 @@ class Blog(TimeStamp):
     is_published = models.BooleanField(default=False)
     translated_at = models.DateTimeField(null=True, blank=True)
     checked_for_copyright = models.DateTimeField(null=True, blank=True)
+    is_splitted = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.h1}'
