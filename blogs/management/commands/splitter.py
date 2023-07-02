@@ -1,16 +1,13 @@
 from django.core.management import BaseCommand
 import requests
-import base64
-from blogs.models import Blog, Lang
+from blogs.models import Blog
 
 url = 'http://62.210.99.231:6666'
 
 
 def split_paragraphs(text: str):
     try:
-        data = {
-            'text': text
-        }
+        data = {'text': text}
         r = requests.post(url, json=data)
         return (r.text).strip()
     except TypeError as e:
@@ -26,4 +23,3 @@ class Command(BaseCommand):
             blog.content = new_text
             blog.is_splitted = True
             blog.save()
-
