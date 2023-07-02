@@ -17,8 +17,9 @@ def translate(src: str, dis: str, text: str):
             return decoded.decode('utf-8')
         else:
             raise Exception(f"Translated returned status code = {r.status_code}")
-    except TypeError as e:
-        raise Exception(f"{e} -- param : {text}")
+    except Exception as e:
+        return r.text
+        #raise Exception(f"{e} -- param : {text}")
 
 
 class Command(BaseCommand):
