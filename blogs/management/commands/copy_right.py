@@ -1,6 +1,5 @@
 from django.core.management import BaseCommand
 import requests
-import json
 from blogs.models import Blog
 
 burp0_url = "https://papersowl.com:443/plagiarism-checker-send-data"
@@ -31,20 +30,33 @@ burp0_headers = {
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        blogs_to_process = Blog.objects.filter(parent_id__isnull=False, is_processed=False).all()
-        for blog in blogs_to_process:
-            print(blog.id)
-            text_to_check = blog.content
-            burp0_data = {"is_free": "false", "plagchecker_locale": "en", "product_paper_type": "1", "title": '',
-                          "text": text_to_check}
-            r = requests.post(burp0_url, headers=burp0_headers, cookies=burp0_cookies, data=burp0_data)
-            res = r.json()
-            if res.get("error_code") != 0:
-                raise Exception("CopyRighter has error_code: %s" % res.get("error_code"))
-            unique_content = float(res.get("percent"))
-            blog.is_processed = True
-            if unique_content < 75:
-                blog.is_copyrighted = True
-            else:
-                blog.is_ready = True
-            blog.save()
+        to_be_updated = {"is_copyrighted": [], "no_is_copyrighted": []}
+        try:
+            """get all translated blogs that are not processed yet"""
+            blogs_to_process = Blog.objects.filter(parent_id__isnull=False, is_processed=False).all()
+            for blog in blogs_to_process:
+                print(blog.id)
+                text_to_check = blog.content
+                burp0_data = {"is_free": "false", "plagchecker_locale": "en", "product_paper_type": "1", "title": '',
+                              "text": text_to_check}
+                r = requests.post(burp0_url, headers=burp0_headers, cookies=burp0_cookies, data=burp0_data)
+                res = r.json()
+                if res.get("error_code") != 0:
+                    raise Exception("CopyRighter has error_code: %s" % res.get("error_code"))
+
+                unique_content = float(res.get("percent"))
+                # blog.is_processed = True
+                if unique_content < 75:
+                    # blog.is_copyrighted = True
+                    to_be_updated.get("is_copyrighted").append(blog.id)
+                    continue
+                to_be_updated.get("no_is_copyrighted").append(blog.id)
+
+            """Updating records"""
+            Blog.objects.filter(id__in=to_be_updated.get("is_copyrighted")).update(is_copyrighted=True,
+                                                                                   is_processed=True)
+            Blog.objects.filter(id__in=to_be_updated.get("no_is_copyrighted")).update(is_processed=True)
+        except Exception as e:
+            Blog.objects.filter(id__in=to_be_updated.get("is_copyrighted")).update(is_copyrighted=True,
+                                                                                   is_processed=True)
+            Blog.objects.filter(id__in=to_be_updated.get("no_is_copyrighted")).update(is_processed=True)
